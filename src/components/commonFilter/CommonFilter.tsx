@@ -16,7 +16,7 @@ interface filterProps {
   amount: number;
   locale?: [string, boolean][];
 
-  onChangeLocale: React.Dispatch<React.SetStateAction<[string, boolean][]>>;
+  onChangeLocale?: React.Dispatch<React.SetStateAction<[string, boolean][]>>;
   onChangeAmount: React.Dispatch<React.SetStateAction<number>>;
   onChangeStartDate: React.Dispatch<React.SetStateAction<Date>>;
   onChangeEndDate: React.Dispatch<React.SetStateAction<Date | null>>;

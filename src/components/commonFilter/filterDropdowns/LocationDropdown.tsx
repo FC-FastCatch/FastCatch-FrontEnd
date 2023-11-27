@@ -6,7 +6,7 @@ import "./dropdown.scss";
 interface dropdownProps {
   isSelected: "location" | "date" | "amount" | null;
   locale: [string, boolean][];
-  onChangeLocale: React.Dispatch<React.SetStateAction<[string, boolean][]>>;
+  onChangeLocale?: React.Dispatch<React.SetStateAction<[string, boolean][]>>;
   onChangeFilter: React.Dispatch<React.SetStateAction<"location" | "date" | "amount" | null>>;
 }
 
