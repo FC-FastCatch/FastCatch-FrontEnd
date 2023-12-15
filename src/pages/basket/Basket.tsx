@@ -1,18 +1,19 @@
+import instance from "@/api/instanceApi";
+import { Button } from "@/components/common";
+import { OrderItemTypes, orderState } from "@/states/orderState";
+import { CartItemType } from "@/types/basket";
+import { calculateTotalRoomsAndPrice } from "@/utils/calculateTotalRoomsAndPrice";
+import { flattenCartItemsData } from "@/utils/flattenCartItemsData";
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CiShoppingBasket } from "react-icons/ci";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import "./basket.scss";
 import SelectedAccomodation from "./selectedAccomodation/SelectedAccomodation";
-import { CartItemType } from "@/types/basket";
-import { orderState } from "@/states/orderState";
-import { calculateTotalRoomsAndPrice } from "@/utils/calculateTotalRoomsAndPrice";
-import instance from "@/api/instanceApi";
-import { flattenCartItemsData } from "@/utils/flattenCartItemsData";
-import { Button, ToastLayout } from "@/components/common";
 
-interface ApiResponseType {
+export interface ApiResponseType {
   data: { cartItemResponseList: CartItemType[] };
   status?: "SUCCESS" | "FAIL" | "ERROR";
 }
@@ -20,30 +21,15 @@ interface ApiResponseType {
 const Basket = () => {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const navigate = useNavigate();
-  const setOrderData = useSetRecoilState(orderState);
-  const { showToast, ToastContainer } = ToastLayout();
-  const totalData = calculateTotalRoomsAndPrice(cartItems);
+  const setOrderData: SetterOrUpdater<OrderItemTypes[]> =
+    useSetRecoilState(orderState);
+  const totalData =
+    cartItems.length !== 0 ? calculateTotalRoomsAndPrice(cartItems) : null;
 
   const getCartItems = async () => {
     try {
       const { data } = await instance.get<ApiResponseType>("/api/carts");
-      setCartItems(data.data.cartItemResponseList);
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error(axiosError);
-    }
-  };
-
-  const deleteCartItem = async (cartItemId: number) => {
-    try {
-      const { data } = await instance.delete<ApiResponseType>(
-        `/api/cart-items/${cartItemId}`
-      );
-      setCartItems(data.data.cartItemResponseList);
-      showToast({
-        theme: "success",
-        message: "객실이 삭제 되었습니다.",
-      });
+      return data.data.cartItemResponseList;
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error(axiosError);
@@ -53,11 +39,7 @@ const Basket = () => {
   const deleteAllCartItems = async () => {
     try {
       const { data } = await instance.delete<ApiResponseType>("/api/carts");
-      setCartItems(data.data.cartItemResponseList);
-      showToast({
-        theme: "success",
-        message: "객실이 삭제 되었습니다.",
-      });
+      return data.data.cartItemResponseList;
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error(axiosError);
@@ -72,13 +54,24 @@ const Basket = () => {
 
   const handleDeleteAllClick = () => {
     if (window.confirm("장바구니를 비우시겠습니까?")) {
-      deleteAllCartItems();
+      deleteCartMutation.mutate();
     }
   };
 
-  useEffect(() => {
-    getCartItems();
-  }, []);
+  useQuery("getCartitems", getCartItems, {
+    onSuccess: data => {
+      if (data) setCartItems(data);
+    },
+  });
+
+  const deleteCartMutation = useMutation({
+    mutationFn: deleteAllCartItems,
+    onSuccess: data => {
+      if (data) {
+        setCartItems(data);
+      }
+    },
+  });
 
   return (
     <div className="basket-container">
@@ -100,7 +93,7 @@ const Basket = () => {
             <section key={item.accommodationId}>
               <SelectedAccomodation
                 accomdationItems={item}
-                deleteRoom={deleteCartItem}
+                deleteRoom={setCartItems}
               />
               {index !== cartItems.length - 1 && (
                 <hr className="basket-container__hr" />
@@ -110,17 +103,15 @@ const Basket = () => {
           <div className="basket-container__bottom">
             <div className="total-info">
               <span className="text-subtitle5 total-info__count">
-                총 {totalData.totalRoomsConunt}건
+                총 {totalData?.totalRoomsCount}건
               </span>
-              <span className="text-subtitle3">{}</span>
             </div>
             <Button
-              text={`${totalData.totalPrice}원 결제하기`}
+              text={`${totalData?.totalPrice}원 결제하기`}
               buttonSize="large"
               onClick={handlePaymentClick}
             />
           </div>
-          {ToastContainer}
         </div>
       ) : (
         <div className="empty-basket">

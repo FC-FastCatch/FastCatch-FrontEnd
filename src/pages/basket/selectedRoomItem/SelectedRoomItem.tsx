@@ -1,11 +1,15 @@
-import { RoomDescriptionType } from "@/types/basket";
-import "./selectedRoomItem.scss";
+import { CartItemType, RoomDescriptionType } from "@/types/basket";
 import numberFormat from "@/utils/numberFormat";
+import "./selectedRoomItem.scss";
+import instance from "@/api/instanceApi";
+import { ApiResponseType } from "../Basket";
+import { AxiosError } from "axios";
+import { useMutation } from "react-query";
 
 interface RoomPropsType {
   pageType?: "basket" | "orderList";
   room: RoomDescriptionType;
-  deleteRoom: (cartId: number) => Promise<void>;
+  deleteRoom: React.Dispatch<React.SetStateAction<CartItemType[]>>;
 }
 
 const SelectedRoomItem = ({
@@ -25,6 +29,28 @@ const SelectedRoomItem = ({
     startDate,
   } = room;
   const roomPrice = numberFormat(price);
+
+  const deleteCartItem = async (cartItemId: number) => {
+    try {
+      const { data } = await instance.delete<ApiResponseType>(
+        `/api/cart-items/${cartItemId}`
+      );
+
+      return data.data.cartItemResponseList;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      console.error(axiosError);
+    }
+  };
+
+  const deleteCartItemMutation = useMutation({
+    mutationFn: (cartItemId: number) => deleteCartItem(cartItemId),
+    onSuccess: data => {
+      if (data) {
+        deleteRoom(data);
+      }
+    },
+  });
   return (
     <div className="room-list__item">
       <div className="item-content">
@@ -55,7 +81,7 @@ const SelectedRoomItem = ({
           {pageType === "basket" && (
             <span
               className="delete-button text-body2"
-              onClick={() => deleteRoom(cartItemId)}
+              onClick={() => deleteCartItemMutation.mutate(cartItemId)}
             >
               삭제
             </span>

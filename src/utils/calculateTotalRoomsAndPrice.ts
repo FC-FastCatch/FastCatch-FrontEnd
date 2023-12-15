@@ -3,15 +3,15 @@ import { CartItemType } from "../types/basket";
 
 export const calculateTotalRoomsAndPrice = (
   data: CartItemType[]
-): { totalRoomsConunt: number; totalPrice: string } => {
-  let totalRoomsConunt = 0;
+): { totalRoomsCount: number; totalPrice: string } => {
+  let totalRoomsCount = 0;
   let price = 0;
   data.forEach((accommodation: CartItemType) => {
     accommodation.rooms.forEach((room: { price: number }) => {
-      totalRoomsConunt++;
+      totalRoomsCount++;
       price += room.price;
     });
   });
   const totalPrice = numberFormat(price);
-  return { totalRoomsConunt, totalPrice };
+  return { totalRoomsCount, totalPrice };
 };
