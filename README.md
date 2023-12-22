@@ -1,3 +1,4 @@
+
 # ✨ 이거 다 되면 팔조 ?! ✨
 
 야놀자 미니 프로젝트 - 숙박 예약 서비스
@@ -164,6 +165,8 @@ Vite는 ESM에 최적화되어 있고, 즉각적인 테스트 환경을 제공�
 
 ### 1) 로그인 페이지
 
+![refac_login (1) (1)](https://github.com/FC-FastCatch/FastCatch-FrontEnd/assets/95595106/eb6fdd58-1377-43ee-9bc0-4ae0e76f6be6)
+
 #### 유효성 검사
 
 - useForm을 사용해 각 항목에 대한 유효성 체크
@@ -177,6 +180,9 @@ Vite는 ESM에 최적화되어 있고, 즉각적인 테스트 환경을 제공�
 - 실패 응답 값에 따라 존재하지 않는 회원이거나, 비밀번호 불일치 시 toast 알림 노출
 
 ### 2) 회원가입 페이지
+
+![refac_signup (1) (1)](https://github.com/FC-FastCatch/FastCatch-FrontEnd/assets/95595106/76dfdb31-256b-4c79-93f2-aeec8fbe9ec6)
+
 
 #### 유효성 검사
 
@@ -282,6 +288,7 @@ Vite는 ESM에 최적화되어 있고, 즉각적인 테스트 환경을 제공�
 #### 유효성 검사
 
 - useValidation 커스텀 훅을 만들어서 항목에 대한 유효성 체크
+![유효성 검사](https://github.com/FC-FastCatch/FastCatch-FrontEnd/assets/98436988/a878efc3-9d63-49fd-a3b2-844b4ac0f1b4)
 
 #### utils 제작
 
@@ -294,6 +301,9 @@ Vite는 ESM에 최적화되어 있고, 즉각적인 테스트 환경을 제공�
 #### 구매 후 처리
 
 - 구매 후 성공과 실패 처리를 구분하였고 실패 시 사유를 사용자에게 제공함으로써 사용자 경험 개선
+![결제 과정](https://github.com/FC-FastCatch/FastCatch-FrontEnd/assets/98436988/c952fdb2-efcd-4af3-95c6-43bf41e123c5)
+![결제 처리](https://github.com/FC-FastCatch/FastCatch-FrontEnd/assets/98436988/47e32072-1125-4fd7-9f34-b76b3c09cc56)
+
 
 ### 8) 마이 페이지
 
@@ -305,6 +315,19 @@ Vite는 ESM에 최적화되어 있고, 즉각적인 테스트 환경을 제공�
 
 - axios instance를 만들어서 응답과 요청 전에 interceptor를 통해 토큰이 필요한 상황을 분리하지 않도록 하여 개발 비용을 줄이고
   에러 핸들링을 쉽게 하도록 제작
+
+### 9) 주문 목록 페이지
+#### 더보기, 삭제 기능
+
+- 서버와의 통신을 통해 데이터를 주고 받고 react-query를 사용하여 데이터가 삭제되면 바로 서버와 통신하여 업데이트하도록 제작
+![주문 목록](https://github.com/FC-FastCatch/FastCatch-FrontEnd/assets/98436988/e3b63f50-182e-4098-bbcc-21dea6c93cb3)
+
+
+</br>
+
+## 🖥️ 아키텍처
+<img width="1427" alt="아키텍처" src="https://github.com/FC-FastCatch/FastCatch-FrontEnd/assets/94384392/78c0dbb9-3c39-45ed-a839-7e8712d63eaf">
+
 
 </br>
 
