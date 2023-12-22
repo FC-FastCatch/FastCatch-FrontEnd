@@ -1,19 +1,24 @@
 import axios from "axios";
-import { useSetRecoilState } from "recoil";
+import { useRecoilCallback, useRecoilState, useSetRecoilState } from "recoil";
 
 import { userInfoI, userState } from "@/states/userState";
+import { tokenState } from "@/states/tokenState";
 
 export const useAuth = () => {
 
   const setUserInfo = useSetRecoilState(userState);
 
-  const setToken = (
+  const [, setAccessToken] = useRecoilState(tokenState);
+
+  const setToken = async (
     accessToken: string, refreshToken: string, memberRes: userInfoI
   ) => {
-    localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
-    setUserInfo(memberRes)
-  }
+    console.log('여기가 안되는건가', refreshToken);
+    setUserInfo(memberRes);
+    setAccessToken(accessToken);
+  };
+
   return {
     setToken
   }
@@ -45,7 +50,8 @@ export async function refreshAccessToken () {
 
   console.log('토큰 재발급 성공', response.data);
   const newAccessToken = response.data.data.accessToken;
-  localStorage.setItem('accessToken', newAccessToken);
+  const setAccessToken = useSetRecoilState(tokenState);
+  setAccessToken(newAccessToken);
 
   return newAccessToken;
 }

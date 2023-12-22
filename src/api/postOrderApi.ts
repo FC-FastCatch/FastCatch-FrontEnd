@@ -1,9 +1,11 @@
-import instance from "./instanceApi";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
+// import instance from "./instanceApi";
 
 export const postOrderApi = async (
   url: string,
   requestBody: PostOrderApiRequestBodyType
 ) => {
+  const instance = useAuthInterceptor();
   try {
     const res = await instance.post(url, requestBody);
     return res.data;

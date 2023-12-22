@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalLayout, ModalPortal } from "../..";
 import { MdLogout } from "react-icons/md";
 
 import { userState } from "@/states/userState";
-import instance from "@/api/instanceApi";
-import { getRefreshToken, getToken } from "@/utils/getToken";
+// import instance from "@/api/instanceApi";
+import { getRefreshToken } from "@/utils/getToken";
 
 import "../cartButton/cartbutton.scss";
+import { tokenState } from "@/states/tokenState";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
 
 const LogoutButton = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const setUserInfo = useSetRecoilState(userState);
   const navigate = useNavigate();
-  const accessToken = getToken();
+  const accessToken = useRecoilValue(tokenState);
   const refreshToken = getRefreshToken();
+  const instance = useAuthInterceptor();
 
   const modalProps = {
     title: "로그아웃",
@@ -39,7 +42,6 @@ const LogoutButton = () => {
                 body
               );
           
-              localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
               setUserInfo(null);
               navigate('/');

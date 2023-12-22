@@ -1,5 +1,6 @@
-import instance from "@/api/instanceApi";
+// import instance from "@/api/instanceApi";
 import { Badge, Button, ToastLayout } from "@/components/common";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
 import { filterState } from "@/states/filterState";
 import { orderState } from "@/states/orderState";
 import { userState } from "@/states/userState";
@@ -79,6 +80,7 @@ const RoomInfo = ({ room, accommodationName, isClicked }: RoomInfoProps) => {
   }, [window.location.search, isClicked]);
 
   const postBasket: any = () => {
+    const instance = useAuthInterceptor();
     try {
       if (!userData) {
         return;

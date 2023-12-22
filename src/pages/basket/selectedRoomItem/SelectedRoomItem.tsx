@@ -1,10 +1,11 @@
 import { CartItemType, RoomDescriptionType } from "@/types/basket";
 import numberFormat from "@/utils/numberFormat";
 import "./selectedRoomItem.scss";
-import instance from "@/api/instanceApi";
+// import instance from "@/api/instanceApi";
 import { ApiResponseType } from "../Basket";
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
 
 interface RoomPropsType {
   pageType?: "basket" | "orderList";
@@ -31,6 +32,7 @@ const SelectedRoomItem = ({
   const roomPrice = numberFormat(price);
 
   const deleteCartItem = async (cartItemId: number) => {
+    const instance = useAuthInterceptor();
     try {
       const { data } = await instance.delete<ApiResponseType>(
         `/api/cart-items/${cartItemId}`

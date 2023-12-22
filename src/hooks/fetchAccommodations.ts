@@ -1,5 +1,6 @@
-import instance from "../api/instanceApi";
+// import instance from "../api/instanceApi";
 import { Accommodations } from "@/types/accommodations";
+import useAuthInterceptor from "./useAuthInterceptor";
 
 export const fetchAccommodationsData = async (
   REGION: string,
@@ -9,6 +10,9 @@ export const fetchAccommodationsData = async (
   AMOUNT: number,
   PAGE: number
 ): Promise<Accommodations> => {
+
+  const instance = useAuthInterceptor();
+  console.log(instance);
   try {
     const res = await instance.get(
       `/api/accommodations?category=${CATEGORY}&region=${REGION}&startDate=${STARTDATE}&endDate=${ENDDATE}&headCount=${AMOUNT}&page=${PAGE}`
@@ -20,6 +24,7 @@ export const fetchAccommodationsData = async (
 };
 
 export const searchAccommodationByName = async (NAME: string) => {
+  const instance = useAuthInterceptor();
   try {
     const res = await instance.get(
       `/api/accommodations/search-by-name?query=${NAME}`

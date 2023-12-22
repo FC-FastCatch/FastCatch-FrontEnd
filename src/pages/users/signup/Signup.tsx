@@ -6,10 +6,11 @@ import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 
 import TermsAgreement from "@/components/termsAgreement/TermsAgreement";
-import instance from "@/api/instanceApi";
+// import instance from "@/api/instanceApi";
 import { Button, ToastLayout } from "@/components/common";
 
 import "../users.scss";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
 
 const Signup = () => {
   // 회원가입/로그인 링크이동
@@ -46,6 +47,8 @@ const Signup = () => {
   const { showToast, ToastContainer } = ToastLayout();
 
   const duplicatedNickName = async () => {
+    const instance = useAuthInterceptor();
+    console.log(instance);
     try {
       const res = await instance.get(
         `/api/members/nickname?nickname=${nickname}`
@@ -75,6 +78,7 @@ const Signup = () => {
         phoneNumber,
       };
       const signUp = async () => {
+        const instance = useAuthInterceptor();
         try {
           const res = await instance.post("/api/members/signup", requestBody);
           await navigate("/login");

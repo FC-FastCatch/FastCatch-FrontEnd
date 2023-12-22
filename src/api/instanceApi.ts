@@ -2,7 +2,8 @@ import axios, { AxiosInstance } from "axios";
 
 import { refreshAccessToken } from "@/hooks/useAuth";
 import { isAccessTokenExpired } from "@/utils/checkToken";
-import { getToken } from "@/utils/getToken";
+import { tokenState } from "@/states/tokenState";
+import { snapshot_UNSTABLE, useRecoilValue } from "recoil";
 
 
 const instance: AxiosInstance = axios.create({
@@ -13,11 +14,13 @@ const instance: AxiosInstance = axios.create({
 instance.interceptors.request.use(
   async (config) => {
     config.headers["Content-Type"] = "application/json";
-    const accessToken = getToken();
+    const accessToken = useRecoilValue(tokenState);
+
+    console.log('왜여기', accessToken);
 
     if (accessToken) {
       const isTokenExpired = isAccessTokenExpired(accessToken);
-
+      console.log(2);
       if (isTokenExpired) {
         try {
           const newAccessToken = await refreshAccessToken();
@@ -29,6 +32,7 @@ instance.interceptors.request.use(
         config.headers["Authorization"] = `Bearer ${accessToken}`;
       }
     }
+    console.log(3);
     return config;
   },
   error => {
@@ -40,8 +44,8 @@ instance.interceptors.response.use(
   response => response,
   error => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      // localStorage.removeItem('accessToken');
+      // localStorage.removeItem('refreshToken');
       alert('인증이 만료되어 재 로그인이 필요합니다.');
       window.location.href = '/login';
     }

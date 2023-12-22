@@ -1,7 +1,9 @@
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
 import { OrderDataTypes } from "../types/order";
-import instance from "./instanceApi";
+// import instance from "./instanceApi";
 
 export const getOrderApi = async () => {
+  const instance = useAuthInterceptor();
   try {
     const res = await instance.get("/api/orders");
     const orderData = res.data.data.orders;

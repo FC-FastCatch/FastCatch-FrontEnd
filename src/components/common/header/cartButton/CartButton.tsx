@@ -1,9 +1,10 @@
-import instance from "@/api/instanceApi";
+// import instance from "@/api/instanceApi";
 import { FiShoppingCart } from "react-icons/fi";
 import "./cartbutton.scss";
 import { useEffect, useState /*, useEffect */ } from "react";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
 
 export interface RoomDescriptionType {
   cartItemId: number;
@@ -31,6 +32,7 @@ interface ApiResponseType {
 
 const CartButton = () => {
   const getCartItems = async () => {
+    const instance = useAuthInterceptor();
     try {
       const { data } = await instance.get<ApiResponseType>("/api/carts");
       return data.data.cartItemResponseList;

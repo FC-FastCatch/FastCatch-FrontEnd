@@ -1,4 +1,4 @@
-import instance from "@/api/instanceApi";
+// import instance from "@/api/instanceApi";
 import { Button } from "@/components/common";
 import { OrderItemTypes, orderState } from "@/states/orderState";
 import { CartItemType } from "@/types/basket";
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import "./basket.scss";
 import SelectedAccomodation from "./selectedAccomodation/SelectedAccomodation";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
 
 export interface ApiResponseType {
   data: { cartItemResponseList: CartItemType[] };
@@ -27,6 +28,7 @@ const Basket = () => {
     cartItems.length !== 0 ? calculateTotalRoomsAndPrice(cartItems) : null;
 
   const getCartItems = async () => {
+    const instance = useAuthInterceptor();
     try {
       const { data } = await instance.get<ApiResponseType>("/api/carts");
       return data.data.cartItemResponseList;
@@ -37,6 +39,7 @@ const Basket = () => {
   };
 
   const deleteAllCartItems = async () => {
+    const instance = useAuthInterceptor();
     try {
       const { data } = await instance.delete<ApiResponseType>("/api/carts");
       return data.data.cartItemResponseList;

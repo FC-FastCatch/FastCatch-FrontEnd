@@ -6,10 +6,11 @@ import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 
 import "../users.scss";
-import instance from "@/api/instanceApi";
+// import instance from "@/api/instanceApi";
 import { useAuth } from "@/hooks/useAuth";
 import { Button, ToastLayout } from "@/components/common";
 import { memberResI } from "@/types/member";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
 
 const Login = () => {
   // 회원가입/로그인 링크이동
@@ -36,6 +37,7 @@ const Login = () => {
   const email = watch("email");
   const password = watch("password");
   const { setToken } = useAuth();
+  const instance = useAuthInterceptor();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

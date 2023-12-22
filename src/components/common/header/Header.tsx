@@ -11,18 +11,20 @@ import CartButton from "./cartButton/CartButton";
 import SearchFilter from "./searchFilter/SearchFilter";
 import CategoryFilter from "./categoryFilter/CategoryFilter";
 
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { filterState } from "@/states/filterState";
 import { format } from "date-fns";
 import { fetchAccommodationsData } from "@/hooks/fetchAccommodations";
 import { useQuery } from "react-query";
 import LogoutButton from "./logoutButton/LogoutButton";
 import { Button, Filter } from "..";
+import { tokenState } from "@/states/tokenState";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [filterStates, setFilterStates] = useRecoilState(filterState);
+  const accessToken = useRecoilValue(tokenState);
 
   const [filterMode, setFilterMode] = useState<"filter" | "search">("filter");
 
@@ -101,7 +103,7 @@ const Header = () => {
             </button>
           </section>
           <section className="header-container__right">
-            {localStorage.getItem("accessToken") ? ( //
+            {accessToken ? ( //
               <>
                 <CartButton />
                 <LogoutButton />

@@ -1,6 +1,8 @@
-import instance from "./instanceApi";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
+// import instance from "./instanceApi";
 
 export const deleteOrderApi = async (orderId: number) => {
+  const instance = useAuthInterceptor();
   try {
     const res = await instance.delete(`/api/orders/${orderId}`);
     return res;

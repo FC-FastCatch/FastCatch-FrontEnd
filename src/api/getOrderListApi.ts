@@ -1,4 +1,5 @@
-import instance from "./instanceApi";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
+// import instance from "./instanceApi";
 
 const pageNums = {
   reserved: 1,
@@ -9,6 +10,7 @@ const pageNums = {
 export const getOrderListApi = async (
   status: "reserved" | "used" | "canceled"
 ) => {
+  const instance = useAuthInterceptor();
   try {
     const res = await instance.get(
       `/api/orders/status/${status}?page=${pageNums[status]}`

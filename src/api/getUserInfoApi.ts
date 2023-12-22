@@ -1,6 +1,8 @@
-import instance from "./instanceApi";
+import useAuthInterceptor from "@/hooks/useAuthInterceptor";
+// import instance from "./instanceApi";
 
 export const getUserInfoApi = async () => {
+  const instance = useAuthInterceptor();
   try {
     const res = await instance.get("/api/members");
 
