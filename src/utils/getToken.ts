@@ -1,3 +1,5 @@
+import { useCookies } from "react-cookie";
+
 export const getToken = () => {
   try {
     const token = localStorage.getItem("accessToken");
@@ -13,7 +15,8 @@ export const getToken = () => {
 
 export const getRefreshToken = () => {
   try {
-    const token = localStorage.getItem("refreshToken");
+    const [cookies] = useCookies(["refreshToken"]);
+    const token = cookies.refreshToken;
     if (token) {
       return token;
     } else {

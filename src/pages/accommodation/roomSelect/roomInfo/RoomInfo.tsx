@@ -93,7 +93,7 @@ const RoomInfo = ({ room, accommodationName, isClicked }: RoomInfoProps) => {
       });
       return response;
     } catch (error) {
-      console.log("에러에러에러엘에러엘", error);
+      console.log(error);
     }
   };
 
