@@ -16,14 +16,23 @@
 }
 
 .accommodation-container{
-  width:962px;
+  max-width:962px;
   margin:2rem auto 0;
+  @media (max-width:1200px) {
+    margin: 2rem 5rem 0;
+  }
 }
 .accommodation__main-info, .accommodation__introduce, .accommodation__options, .accommodation__select-room, .accommodation__map{
   padding:24px;
 }
 
 .accommodation{
+  &__main-image{
+    max-height: 550px;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+  }
   &__name{
     display: flex;
     gap:8px;
