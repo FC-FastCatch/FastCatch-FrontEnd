@@ -8,6 +8,7 @@ interface RoomImgSwiperProps {
 const RoomImgSwiper = ({ roomImg }: RoomImgSwiperProps) => {
   return (
     <Swiper
+      className="room__swiper"
       modules={[Navigation, Autoplay]}
       spaceBetween={6}
       slidesPerView={1}
@@ -16,16 +17,10 @@ const RoomImgSwiper = ({ roomImg }: RoomImgSwiperProps) => {
         delay: 5000,
       }}
       resistance={false}
-      style={{ height: "280px", margin: "0 4px" }}
     >
       {roomImg.map((obj: any) => (
         <SwiperSlide key={obj.fileName}>
           <img
-            style={{
-              height: "280px",
-              width: "100%",
-              objectFit: "cover",
-            }}
             src={`https://fastcatch-image.s3.ap-northeast-2.amazonaws.com/${obj.fileName}`}
             alt={"이미지"}
             loading="lazy"

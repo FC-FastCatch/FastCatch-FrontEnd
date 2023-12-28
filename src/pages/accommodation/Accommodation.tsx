@@ -51,7 +51,7 @@ const Accommodation = () => {
   return (
     <div className="accommodation-container">
       <img
-        style={{ height: "550px", width: "100%", objectFit: "cover" }}
+        className="accommodation__main-image"
         src={`https://fastcatch-image.s3.ap-northeast-2.amazonaws.com/${data.image}`}
         alt={data.name}
         loading="lazy"
