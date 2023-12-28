@@ -104,7 +104,6 @@ const Home = () => {
             ) as HTMLInputElement;
             if (searchInput) {
               searchInput.value = "";
-              console.log(searchInput);
             }
             setDetailFiltered([]);
           }}

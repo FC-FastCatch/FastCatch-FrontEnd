@@ -1,17 +1,24 @@
 import axios from "axios";
 import { useSetRecoilState } from "recoil";
+import { useCookies } from "react-cookie";
 
 import { userInfoI, userState } from "@/states/userState";
 
 export const useAuth = () => {
 
   const setUserInfo = useSetRecoilState(userState);
+  const [, setCookie] = useCookies(["refreshToken"]);
 
   const setToken = (
     accessToken: string, refreshToken: string, memberRes: userInfoI
   ) => {
     localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
+
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 7);
+    
+    setCookie("refreshToken", refreshToken, { secure: true, httpOnly: true, expires: expirationDate, path: "/" });
+
     setUserInfo(memberRes)
   }
   return {
@@ -21,7 +28,8 @@ export const useAuth = () => {
 
 export async function refreshAccessToken () {
 
-  const refreshToken = localStorage.getItem("refreshToken");
+  const [cookies] = useCookies(["refreshToken"]);
+  const refreshToken = cookies.refreshToken || null;
   const userDataString = localStorage.getItem("userState");
 
   if (!userDataString) {
@@ -43,7 +51,6 @@ export async function refreshAccessToken () {
     }
   );
 
-  console.log('토큰 재발급 성공', response.data);
   const newAccessToken = response.data.data.accessToken;
   localStorage.setItem('accessToken', newAccessToken);
 

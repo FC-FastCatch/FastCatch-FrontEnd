@@ -41,7 +41,6 @@ instance.interceptors.response.use(
   error => {
     if (error.response?.status === 401) {
       localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
       alert('인증이 만료되어 재 로그인이 필요합니다.');
       window.location.href = '/login';
     }
