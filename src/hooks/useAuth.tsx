@@ -17,7 +17,7 @@ export const useAuth = () => {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 7);
     
-    setCookie("refreshToken", refreshToken, { secure: true, httpOnly: true, expires: expirationDate, path: "/" });
+    setCookie("refreshToken", refreshToken, { domain: 'www.fastcatchapp.com', secure: true, httpOnly: true, expires: expirationDate, path: "/" });
 
     setUserInfo(memberRes)
   }
