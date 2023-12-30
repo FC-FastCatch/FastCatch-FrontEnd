@@ -4,6 +4,9 @@
   max-width: rem(962);
   margin: 3rem auto;
   padding: 0 rem(30);
+  @media (max-width: 600px) {
+    padding: 0 rem(16);
+  }
 
   .empty-basket {
     display: flex;
