@@ -15,7 +15,6 @@ import SelectedAccomodation from "./selectedAccomodation/SelectedAccomodation";
 
 export interface ApiResponseType {
   data: { cartItemResponseList: CartItemType[] };
-  status?: "SUCCESS" | "FAIL" | "ERROR";
 }
 
 const Basket = () => {
